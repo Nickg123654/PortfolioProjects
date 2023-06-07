@@ -51,15 +51,17 @@ WHERE growthrate < 0
 ORDER BY growthrate DESC;
 
 --Countries with a decrease in population from 2022 to 2023
-SELECT city, country, continent, (pop2023-pop2022) AS popdecrease
+SELECT country, continent, SUM(pop2023-pop2022) AS popdecrease
 FROM "WorldPopulations"
 WHERE (pop2023-pop2022) < 0
+GROUP BY country, continent
 ORDER BY popdecrease DESC;
 
 --Countries with an increase in population from 2022 to 2023
-SELECT city, country, continent, (pop2023-pop2022) AS popincrease
+SELECT country, continent, SUM(pop2023-pop2022) AS popincrease
 FROM "WorldPopulations"
 WHERE (pop2023-pop2022) > 0
+GROUP BY country, continent
 ORDER BY popincrease DESC;
 
 --Compare countries growth rate with the average growth rate
@@ -76,4 +78,11 @@ SELECT country, ROUND((AVG(growthrate)),3) AS average_growthrate,
 FROM "WorldPopulations"
 WHERE growthrate > 0.021
 GROUP BY country
+ORDER BY average_growthrate DESC;
+
+--Continents average growth rate
+
+SELECT continent, ROUND((AVG(growthrate)),3) AS average_growthrate
+FROM "WorldPopulations"
+GROUP BY continent
 ORDER BY average_growthrate DESC;
